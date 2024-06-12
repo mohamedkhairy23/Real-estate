@@ -14,6 +14,7 @@ export const authOptions = {
       },
     }),
   ],
+
   callbacks: {
     // Invoked on successful logged in
     async signIn({ profile }) {
@@ -23,6 +24,7 @@ export const authOptions = {
       // 4. Return true to allow sign in
       return true;
     },
+
     // Modifies the session object
     async session({ session }) {
       // 1. Get user from database
