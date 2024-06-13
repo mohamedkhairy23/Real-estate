@@ -231,10 +231,7 @@ const Navbar = () => {
               </Link>
             )}
             {!isLoggedIn && (
-              <button
-                onClick={() => signIn(provider.id)}
-                className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
-              >
+              <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2">
                 <span>Login or Register</span>
               </button>
             )}
