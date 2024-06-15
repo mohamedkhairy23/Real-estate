@@ -42,14 +42,17 @@ const PropertySchema = new Schema(
     beds: {
       type: Number,
       required: true,
+      min: 1,
     },
     baths: {
       type: Number,
       required: true,
+      min: 1,
     },
     square_feet: {
       type: Number,
       required: true,
+      min: 20,
     },
     amenities: [
       {
