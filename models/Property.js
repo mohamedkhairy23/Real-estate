@@ -11,6 +11,8 @@ const PropertySchema = new Schema(
       type: String,
       required: true,
       trim: true,
+      minlength: [3, "Too short property name"],
+      maxlength: [100, "Too long property name"],
     },
     type: {
       type: String,
@@ -19,16 +21,22 @@ const PropertySchema = new Schema(
     },
     description: {
       type: String,
+      required: true,
+      minlength: [20, "Too short property name"],
+      maxlength: [300, "Too long property name"],
     },
     location: {
       street: {
         type: String,
+        required: true,
       },
       city: {
         type: String,
+        required: true,
       },
       zipcode: {
         type: String,
+        required: true,
       },
     },
     beds: {
@@ -46,6 +54,7 @@ const PropertySchema = new Schema(
     amenities: [
       {
         type: String,
+        required: true,
       },
     ],
     rates: {
@@ -62,17 +71,21 @@ const PropertySchema = new Schema(
     seller_info: {
       name: {
         type: String,
+        required: true,
       },
       email: {
         type: String,
+        required: true,
       },
       phone: {
         type: String,
+        required: true,
       },
     },
     images: [
       {
         type: String,
+        required: true,
       },
     ],
     is_featured: {

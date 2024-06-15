@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 const PropertyAddForm = () => {
   const [mounted, setMounted] = useState(false);
@@ -31,9 +32,13 @@ const PropertyAddForm = () => {
     images: [],
   });
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    mode: "onChange",
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -81,6 +86,13 @@ const PropertyAddForm = () => {
     }));
   };
 
+  const handleDelete = (e, imageUrl) => {
+    setFields((prevFields) => ({
+      ...prevFields,
+      images: fields.images.filter((url) => url !== imageUrl),
+    }));
+  };
+
   const handleImageChange = (e) => {
     const { files } = e.target;
 
@@ -89,7 +101,7 @@ const PropertyAddForm = () => {
 
     // Add new files to the array
     for (const file of files) {
-      updatedImages.push(file);
+      if (updatedImages.length < 4) updatedImages.push(file);
     }
 
     // Update state with updated array
@@ -99,9 +111,17 @@ const PropertyAddForm = () => {
     }));
   };
 
+  const handleSubmitAddProperty = async (e) => {
+    console.log(fields);
+  };
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     mounted && (
-      <form>
+      <form onSubmit={handleSubmit(handleSubmitAddProperty)}>
         <h2 className="text-3xl text-center font-semibold mb-6">
           Add Property
         </h2>
@@ -115,7 +135,12 @@ const PropertyAddForm = () => {
             className="border rounded w-full py-2 px-3"
             required=""
             value={fields.type}
-            onChange={handleChange}
+            {...register("type", {
+              required: "This field is required",
+              onChange: (e) => {
+                handleChange(e);
+              },
+            })}
           >
             <option value="">Select Property Type</option>
             <option value="Apartment">Apartment</option>
@@ -125,7 +150,12 @@ const PropertyAddForm = () => {
             <option value="Room">Room</option>
             <option value="Studio">Studio</option>
             <option value="Other">Other</option>
-          </select>
+          </select>{" "}
+          {errors.type && (
+            <span className="text-red-500 text-sm font-bold">
+              {errors.type.message}
+            </span>
+          )}
         </div>
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2">
@@ -139,8 +169,24 @@ const PropertyAddForm = () => {
             placeholder="eg. Beautiful Apartment In Miami"
             required=""
             value={fields.name}
-            onChange={handleChange}
+            {...register("name", {
+              required: true,
+              minLength: 3,
+              maxLength: 100,
+              onChange: (e) => {
+                handleChange(e);
+              },
+            })}
           />
+          {errors.name && (
+            <span className="text-red-500 text-sm font-bold">
+              {errors.name.type === "minLength" &&
+                "Property name must be at least 3 characters long"}
+              {errors.name.type === "maxLength" &&
+                "Property name must be less than 100 characters long"}
+              {errors.name.type === "required" && "This field is required"}
+            </span>
+          )}
         </div>
         <div className="mb-4">
           <label
@@ -156,20 +202,47 @@ const PropertyAddForm = () => {
             rows={4}
             placeholder="Add an optional description of your property"
             value={fields.description}
-            onChange={handleChange}
+            {...register("description", {
+              required: true,
+              minLength: 20,
+              maxLength: 300,
+              onChange: (e) => {
+                handleChange(e);
+              },
+            })}
           />
+          {errors.description && (
+            <span className="text-red-500 text-sm font-bold">
+              {errors.description.type === "minLength" &&
+                "Property description must be at least 20 characters long"}
+              {errors.description.type === "maxLength" &&
+                "Property description must be less than 300 characters long"}
+              {errors.description.type === "required" &&
+                "This field is required"}
+            </span>
+          )}
         </div>
         <div className="mb-4 bg-blue-50 p-4">
-          <label className="block text-gray-700 font-bold mb-2">Location</label>
+          <label className="block text-gray-700 font-bold mb-2">Location</label>{" "}
           <input
             type="text"
             id="street"
             name="location.street"
             className="border rounded w-full py-2 px-3 mb-2"
             placeholder="Street"
-            value={fields.location.street}
-            onChange={handleChange}
+            value={fields?.location?.street}
+            {...register("location.street", {
+              required: "This field is required",
+              onChange: (e) => {
+                handleChange(e);
+              },
+            })}
           />
+          {errors?.location?.street && (
+            <span className="text-red-500 text-sm font-bold">
+              {errors?.location?.street?.message}
+            </span>
+          )}
           <input
             type="text"
             id="city"
@@ -177,9 +250,19 @@ const PropertyAddForm = () => {
             className="border rounded w-full py-2 px-3 mb-2"
             placeholder="City"
             required=""
-            value={fields.location.city}
-            onChange={handleChange}
+            value={fields?.location?.city}
+            {...register("location.city", {
+              required: "This field is required",
+              onChange: (e) => {
+                handleChange(e);
+              },
+            })}
           />
+          {errors?.location?.city && (
+            <span className="text-red-500 text-sm font-bold">
+              {errors?.location?.city?.message}
+            </span>
+          )}
           <input
             type="text"
             id="state"
@@ -187,18 +270,38 @@ const PropertyAddForm = () => {
             className="border rounded w-full py-2 px-3 mb-2"
             placeholder="State"
             required=""
-            value={fields.location.state}
-            onChange={handleChange}
+            value={fields?.location?.state}
+            {...register("location.state", {
+              required: "This field is required",
+              onChange: (e) => {
+                handleChange(e);
+              },
+            })}
           />
+          {errors?.location?.state && (
+            <span className="text-red-500 text-sm font-bold">
+              {errors?.location?.state?.message}
+            </span>
+          )}
           <input
             type="text"
             id="zipcode"
             name="location.zipcode"
             className="border rounded w-full py-2 px-3 mb-2"
             placeholder="Zipcode"
-            value={fields.location.zipcode}
-            onChange={handleChange}
+            value={fields?.location?.zipcode}
+            {...register("location.zipcode", {
+              required: "This field is required",
+              onChange: (e) => {
+                handleChange(e);
+              },
+            })}
           />
+          {errors?.location?.zipcode && (
+            <span className="text-red-500 text-sm font-bold">
+              {errors?.location?.zipcode?.message}
+            </span>
+          )}
         </div>
         <div className="mb-4 flex flex-wrap">
           <div className="w-full sm:w-1/3 pr-2">
@@ -215,8 +318,19 @@ const PropertyAddForm = () => {
               className="border rounded w-full py-2 px-3"
               required=""
               value={fields.beds}
-              onChange={handleChange}
+              min={1}
+              {...register("beds", {
+                required: "This field is required",
+                onChange: (e) => {
+                  handleChange(e);
+                },
+              })}
             />
+            {errors?.beds?.message && (
+              <span className="text-red-500 text-sm font-bold">
+                {errors.beds?.message}
+              </span>
+            )}
           </div>
           <div className="w-full sm:w-1/3 px-2">
             <label
@@ -232,8 +346,19 @@ const PropertyAddForm = () => {
               className="border rounded w-full py-2 px-3"
               required=""
               value={fields.baths}
-              onChange={handleChange}
+              min={1}
+              {...register("baths", {
+                required: "This field is required",
+                onChange: (e) => {
+                  handleChange(e);
+                },
+              })}
             />
+            {errors.baths?.message && (
+              <span className="text-red-500 text-sm font-bold">
+                {errors.baths?.message}
+              </span>
+            )}
           </div>
           <div className="w-full sm:w-1/3 pl-2">
             <label
@@ -249,8 +374,23 @@ const PropertyAddForm = () => {
               className="border rounded w-full py-2 px-3"
               required=""
               value={fields.square_feet}
-              onChange={handleChange}
+              min={20}
+              {...register("square_feet", {
+                required: true,
+                min: 20,
+                onChange: (e) => {
+                  handleChange(e);
+                },
+              })}
             />
+            {errors.square_feet && (
+              <span className="text-red-500 text-sm font-bold">
+                {errors.square_feet.type === "min" &&
+                  "Square feet must be at least 20 square feet"}
+                {errors.square_feet.type === "required" &&
+                  "This field is required"}
+              </span>
+            )}
           </div>
         </div>
         <div className="mb-4">
@@ -265,8 +405,19 @@ const PropertyAddForm = () => {
                 name="amenities"
                 defaultValue="Wifi"
                 className="mr-2"
-                checked={fields.amenities.includes("Wifi")}
-                onChange={handleAmenitiesChange}
+                checked={fields?.amenities?.includes("Wifi")}
+                {...register("amenities", {
+                  validate: (amenities) => {
+                    if (amenities && amenities.length > 0) {
+                      return true;
+                    } else {
+                      return "At least one amenity is required";
+                    }
+                  },
+                  onChange: (e) => {
+                    handleAmenitiesChange(e);
+                  },
+                })}
               />
               <label htmlFor="amenity_wifi">Wifi</label>
             </div>
@@ -277,14 +428,21 @@ const PropertyAddForm = () => {
                 name="amenities"
                 defaultValue="Full Kitchen"
                 className="mr-2"
+                checked={fields?.amenities?.includes("Full Kitchen")}
+                {...register("amenities", {
+                  validate: (amenities) => {
+                    if (amenities && amenities.length > 0) {
+                      return true;
+                    } else {
+                      return "At least one amenity is required";
+                    }
+                  },
+                  onChange: (e) => {
+                    handleAmenitiesChange(e);
+                  },
+                })}
               />
-              <label
-                htmlFor="amenity_kitchen"
-                checked={fields.amenities.includes("Full Kitchen")}
-                onChange={handleAmenitiesChange}
-              >
-                Full kitchen
-              </label>
+              <label htmlFor="amenity_kitchen">Full kitchen</label>
             </div>
             <div>
               <input
@@ -293,8 +451,19 @@ const PropertyAddForm = () => {
                 name="amenities"
                 defaultValue="Washer & Dryer"
                 className="mr-2"
-                checked={fields.amenities.includes("Washer & Dryer")}
-                onChange={handleAmenitiesChange}
+                checked={fields?.amenities?.includes("Washer & Dryer")}
+                {...register("amenities", {
+                  validate: (amenities) => {
+                    if (amenities && amenities.length > 0) {
+                      return true;
+                    } else {
+                      return "At least one amenity is required";
+                    }
+                  },
+                  onChange: (e) => {
+                    handleAmenitiesChange(e);
+                  },
+                })}
               />
               <label htmlFor="amenity_washer_dryer">Washer &amp; Dryer</label>
             </div>
@@ -305,8 +474,19 @@ const PropertyAddForm = () => {
                 name="amenities"
                 defaultValue="Free Parking"
                 className="mr-2"
-                checked={fields.amenities.includes("Free Parking")}
-                onChange={handleAmenitiesChange}
+                checked={fields?.amenities?.includes("Free Parking")}
+                {...register("amenities", {
+                  validate: (amenities) => {
+                    if (amenities && amenities.length > 0) {
+                      return true;
+                    } else {
+                      return "At least one amenity is required";
+                    }
+                  },
+                  onChange: (e) => {
+                    handleAmenitiesChange(e);
+                  },
+                })}
               />
               <label htmlFor="amenity_free_parking">Free Parking</label>
             </div>
@@ -317,8 +497,19 @@ const PropertyAddForm = () => {
                 name="amenities"
                 defaultValue="Swimming Pool"
                 className="mr-2"
-                checked={fields.amenities.includes("Swimming Pool")}
-                onChange={handleAmenitiesChange}
+                checked={fields?.amenities?.includes("Swimming Pool")}
+                {...register("amenities", {
+                  validate: (amenities) => {
+                    if (amenities && amenities.length > 0) {
+                      return true;
+                    } else {
+                      return "At least one amenity is required";
+                    }
+                  },
+                  onChange: (e) => {
+                    handleAmenitiesChange(e);
+                  },
+                })}
               />
               <label htmlFor="amenity_pool">Swimming Pool</label>
             </div>
@@ -329,8 +520,19 @@ const PropertyAddForm = () => {
                 name="amenities"
                 defaultValue="Hot Tub"
                 className="mr-2"
-                checked={fields.amenities.includes("Hot Tub")}
-                onChange={handleAmenitiesChange}
+                checked={fields?.amenities?.includes("Hot Tub")}
+                {...register("amenities", {
+                  validate: (amenities) => {
+                    if (amenities && amenities.length > 0) {
+                      return true;
+                    } else {
+                      return "At least one amenity is required";
+                    }
+                  },
+                  onChange: (e) => {
+                    handleAmenitiesChange(e);
+                  },
+                })}
               />
               <label htmlFor="amenity_hot_tub">Hot Tub</label>
             </div>
@@ -341,8 +543,19 @@ const PropertyAddForm = () => {
                 name="amenities"
                 defaultValue="24/7 Security"
                 className="mr-2"
-                checked={fields.amenities.includes("24/7 Security")}
-                onChange={handleAmenitiesChange}
+                checked={fields?.amenities?.includes("24/7 Security")}
+                {...register("amenities", {
+                  validate: (amenities) => {
+                    if (amenities && amenities.length > 0) {
+                      return true;
+                    } else {
+                      return "At least one amenity is required";
+                    }
+                  },
+                  onChange: (e) => {
+                    handleAmenitiesChange(e);
+                  },
+                })}
               />
               <label htmlFor="amenity_24_7_security">24/7 Security</label>
             </div>
@@ -353,8 +566,19 @@ const PropertyAddForm = () => {
                 name="amenities"
                 defaultValue="Wheelchair Accessible"
                 className="mr-2"
-                checked={fields.amenities.includes("Wheelchair Accessible")}
-                onChange={handleAmenitiesChange}
+                checked={fields?.amenities?.includes("Wheelchair Accessible")}
+                {...register("amenities", {
+                  validate: (amenities) => {
+                    if (amenities && amenities.length > 0) {
+                      return true;
+                    } else {
+                      return "At least one amenity is required";
+                    }
+                  },
+                  onChange: (e) => {
+                    handleAmenitiesChange(e);
+                  },
+                })}
               />
               <label htmlFor="amenity_wheelchair_accessible">
                 Wheelchair Accessible
@@ -367,8 +591,19 @@ const PropertyAddForm = () => {
                 name="amenities"
                 defaultValue="Elevator Access"
                 className="mr-2"
-                checked={fields.amenities.includes("Elevator Access")}
-                onChange={handleAmenitiesChange}
+                checked={fields?.amenities?.includes("Elevator Access")}
+                {...register("amenities", {
+                  validate: (amenities) => {
+                    if (amenities && amenities.length > 0) {
+                      return true;
+                    } else {
+                      return "At least one amenity is required";
+                    }
+                  },
+                  onChange: (e) => {
+                    handleAmenitiesChange(e);
+                  },
+                })}
               />
               <label htmlFor="amenity_elevator_access">Elevator Access</label>
             </div>
@@ -379,8 +614,19 @@ const PropertyAddForm = () => {
                 name="amenities"
                 defaultValue="Dishwasher"
                 className="mr-2"
-                checked={fields.amenities.includes("Dishwasher")}
-                onChange={handleAmenitiesChange}
+                checked={fields?.amenities?.includes("Dishwasher")}
+                {...register("amenities", {
+                  validate: (amenities) => {
+                    if (amenities && amenities.length > 0) {
+                      return true;
+                    } else {
+                      return "At least one amenity is required";
+                    }
+                  },
+                  onChange: (e) => {
+                    handleAmenitiesChange(e);
+                  },
+                })}
               />
               <label htmlFor="amenity_dishwasher">Dishwasher</label>
             </div>
@@ -391,8 +637,19 @@ const PropertyAddForm = () => {
                 name="amenities"
                 defaultValue="Gym/Fitness Center"
                 className="mr-2"
-                checked={fields.amenities.includes("Gym/Fitness Center")}
-                onChange={handleAmenitiesChange}
+                checked={fields?.amenities?.includes("Gym/Fitness Center")}
+                {...register("amenities", {
+                  validate: (amenities) => {
+                    if (amenities && amenities.length > 0) {
+                      return true;
+                    } else {
+                      return "At least one amenity is required";
+                    }
+                  },
+                  onChange: (e) => {
+                    handleAmenitiesChange(e);
+                  },
+                })}
               />
               <label htmlFor="amenity_gym_fitness_center">
                 Gym/Fitness Center
@@ -405,8 +662,19 @@ const PropertyAddForm = () => {
                 name="amenities"
                 defaultValue="Air Conditioning"
                 className="mr-2"
-                checked={fields.amenities.includes("Air Conditioning")}
-                onChange={handleAmenitiesChange}
+                checked={fields?.amenities?.includes("Air Conditioning")}
+                {...register("amenities", {
+                  validate: (amenities) => {
+                    if (amenities && amenities.length > 0) {
+                      return true;
+                    } else {
+                      return "At least one amenity is required";
+                    }
+                  },
+                  onChange: (e) => {
+                    handleAmenitiesChange(e);
+                  },
+                })}
               />
               <label htmlFor="amenity_air_conditioning">Air Conditioning</label>
             </div>
@@ -417,8 +685,19 @@ const PropertyAddForm = () => {
                 name="amenities"
                 defaultValue="Balcony/Patio"
                 className="mr-2"
-                checked={fields.amenities.includes("Balcony/Patio")}
-                onChange={handleAmenitiesChange}
+                checked={fields?.amenities?.includes("Balcony/Patio")}
+                {...register("amenities", {
+                  validate: (amenities) => {
+                    if (amenities && amenities.length > 0) {
+                      return true;
+                    } else {
+                      return "At least one amenity is required";
+                    }
+                  },
+                  onChange: (e) => {
+                    handleAmenitiesChange(e);
+                  },
+                })}
               />
               <label htmlFor="amenity_balcony_patio">Balcony/Patio</label>
             </div>
@@ -429,8 +708,19 @@ const PropertyAddForm = () => {
                 name="amenities"
                 defaultValue="Smart TV"
                 className="mr-2"
-                checked={fields.amenities.includes("Smart TV")}
-                onChange={handleAmenitiesChange}
+                checked={fields?.amenities?.includes("Smart TV")}
+                {...register("amenities", {
+                  validate: (amenities) => {
+                    if (amenities && amenities.length > 0) {
+                      return true;
+                    } else {
+                      return "At least one amenity is required";
+                    }
+                  },
+                  onChange: (e) => {
+                    handleAmenitiesChange(e);
+                  },
+                })}
               />
               <label htmlFor="amenity_smart_tv">Smart TV</label>
             </div>
@@ -441,12 +731,28 @@ const PropertyAddForm = () => {
                 name="amenities"
                 value="Coffee Maker"
                 className="mr-2"
-                checked={fields.amenities.includes("Coffee Maker")}
-                onChange={handleAmenitiesChange}
+                checked={fields?.amenities?.includes("Coffee Maker")}
+                {...register("amenities", {
+                  validate: (amenities) => {
+                    if (amenities && amenities.length > 0) {
+                      return true;
+                    } else {
+                      return "At least one amenity is required";
+                    }
+                  },
+                  onChange: (e) => {
+                    handleAmenitiesChange(e);
+                  },
+                })}
               />
               <label htmlFor="amenity_coffee_maker">Coffee Maker</label>
             </div>
           </div>
+          {errors.amenities && (
+            <span className="text-red-500 text-sm font-bold">
+              {errors.amenities.message}
+            </span>
+          )}
         </div>
         <div className="mb-4 bg-blue-50 p-4">
           <label className="block text-gray-700 font-bold mb-2">
@@ -462,7 +768,7 @@ const PropertyAddForm = () => {
                 id="weekly_rate"
                 name="rates.weekly"
                 className="border rounded w-full py-2 px-3"
-                value={fields.rates.weekly}
+                value={fields?.rates?.weekly}
                 onChange={handleChange}
               />
             </div>
@@ -475,7 +781,7 @@ const PropertyAddForm = () => {
                 id="monthly_rate"
                 name="rates.monthly"
                 className="border rounded w-full py-2 px-3"
-                value={fields.rates.monthly}
+                value={fields?.rates?.monthly}
                 onChange={handleChange}
               />
             </div>
@@ -488,7 +794,7 @@ const PropertyAddForm = () => {
                 id="nightly_rate"
                 name="rates.nightly"
                 className="border rounded w-full py-2 px-3"
-                value={fields.rates.nightly}
+                value={fields?.rates?.nightly}
                 onChange={handleChange}
               />
             </div>
@@ -504,12 +810,22 @@ const PropertyAddForm = () => {
           <input
             type="text"
             id="seller_name"
-            name="seller_info.name."
+            name="seller_info.name"
             className="border rounded w-full py-2 px-3"
             placeholder="Name"
-            value={fields.seller_info.name}
-            onChange={handleChange}
+            value={fields?.seller_info?.name}
+            {...register("seller_info.name", {
+              required: "This field is required",
+              onChange: (e) => {
+                handleChange(e);
+              },
+            })}
           />
+          {errors?.seller_info?.name && (
+            <span className="text-red-500 text-sm font-bold">
+              {errors?.seller_info?.name?.message}
+            </span>
+          )}
         </div>
         <div className="mb-4">
           <label
@@ -525,9 +841,24 @@ const PropertyAddForm = () => {
             className="border rounded w-full py-2 px-3"
             placeholder="Email address"
             required=""
-            value={fields.seller_info.email}
-            onChange={handleChange}
+            value={fields?.seller_info?.email}
+            {...register("seller_info.email", {
+              required: true,
+              pattern:
+                /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+              onChange: (e) => {
+                handleChange(e);
+              },
+            })}
           />
+          {errors?.seller_info?.email && (
+            <span className="text-red-500 text-sm font-bold">
+              {errors.seller_info?.email?.type === "required" &&
+                "This field is required"}
+              {errors.seller_info?.email?.type === "pattern" &&
+                "Invalid email address"}
+            </span>
+          )}
         </div>
         <div className="mb-4">
           <label
@@ -542,9 +873,23 @@ const PropertyAddForm = () => {
             name="seller_info.phone"
             className="border rounded w-full py-2 px-3"
             placeholder="Phone"
-            value={fields.seller_info.phone}
-            onChange={handleChange}
+            value={fields?.seller_info?.phone}
+            {...register("seller_info.phone", {
+              required: true,
+              pattern: /^01[0125][0-9]{8}$/,
+              onChange: (e) => {
+                handleChange(e);
+              },
+            })}
           />
+          {errors?.seller_info?.phone && (
+            <span className="text-red-500 text-sm font-bold">
+              {errors?.seller_info?.phone.type === "required" &&
+                "This field is required"}
+              {errors?.seller_info?.phone?.type === "pattern" &&
+                "Invalid phone number"}
+            </span>
+          )}
         </div>
         <div className="mb-4">
           <label
@@ -552,16 +897,56 @@ const PropertyAddForm = () => {
             className="block text-gray-700 font-bold mb-2"
           >
             Images (Select up to 4 images)
-          </label>
-          <input
-            type="file"
-            id="images"
-            name="images"
-            className="border rounded w-full py-2 px-3"
-            accept="image/*"
-            multiple="true"
-            onChange={handleImageChange}
-          />
+          </label>{" "}
+          <div className="border rounded p-4 flex flex-col gap-4">
+            {fields?.images && (
+              <div className="grid grid-cols-6 gap-4">
+                {fields?.images?.map((url) => (
+                  <div className="relative group">
+                    <img src={url} className="min-h-full object-cover" />
+                    <button
+                      onClick={(event) => handleDelete(event, url)}
+                      className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 text-white"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              name="images"
+              id="images"
+              className="w-full text-gray-700 font-normal"
+              {...register("images", {
+                validate: (images) => {
+                  const totalLength =
+                    images.length + (fields?.images?.length || 0);
+
+                  if (totalLength === 0) {
+                    return "At least one image should be added";
+                  }
+
+                  // if (totalLength > 4) {
+                  //   return "Total number of images can not be more than 4";
+                  // }
+
+                  return true;
+                },
+                onChange: (e) => {
+                  handleImageChange(e);
+                },
+              })}
+            />
+          </div>
+          {errors.images && (
+            <span className="text-red-500 text-sm font-bold">
+              {errors.images.message}
+            </span>
+          )}
         </div>
         <div>
           <button
