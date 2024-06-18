@@ -38,6 +38,10 @@ const PropertySchema = new Schema(
         type: String,
         required: true,
       },
+      state: {
+        type: String,
+        required: true,
+      },
     },
     beds: {
       type: Number,
@@ -63,12 +67,15 @@ const PropertySchema = new Schema(
     rates: {
       nightly: {
         type: Number,
+        min: 20,
       },
       weekly: {
         type: Number,
+        min: 120,
       },
       monthly: {
         type: Number,
+        min: 450,
       },
     },
     seller_info: {
@@ -85,12 +92,12 @@ const PropertySchema = new Schema(
         required: true,
       },
     },
-    images: [
-      {
-        type: String,
-        required: true,
-      },
-    ],
+    // images: [
+    //   {
+    //     type: String,
+    //     required: true,
+    //   },
+    // ],
     is_featured: {
       type: Boolean,
       default: false,

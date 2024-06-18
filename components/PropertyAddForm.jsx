@@ -1,10 +1,12 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 const PropertyAddForm = () => {
-  const [mounted, setMounted] = useState(false);
+  const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN || null;
 
+  const [mounted, setMounted] = useState(false);
   const [fields, setFields] = useState({
     type: "",
     name: "",
@@ -29,7 +31,7 @@ const PropertyAddForm = () => {
       email: "",
       phone: "",
     },
-    images: [],
+    // images: [],
   });
 
   const {
@@ -61,8 +63,6 @@ const PropertyAddForm = () => {
       }));
     }
   };
-
-  console.log(fields);
 
   const handleAmenitiesChange = (e) => {
     const { value, checked } = e.target;
@@ -112,7 +112,80 @@ const PropertyAddForm = () => {
   };
 
   const handleSubmitAddProperty = async (e) => {
-    console.log(fields);
+    // console.log(fields);
+    try {
+      const formData = new FormData(e.target);
+      formData.append("name", fields.name);
+      formData.append("description", fields.description);
+      formData.append("type", fields.type);
+      formData.append("location.street", fields.location.street);
+      formData.append("location.state", fields.location.state);
+      formData.append("location.city", fields.location.city);
+      formData.append("location.zipcode", fields.location.zipcode);
+      formData.append("beds", fields.beds);
+      formData.append("baths", fields.baths);
+      formData.append("square_feet", fields.square_feet);
+      formData.append("rates.nightly", fields.rates.nightly);
+      formData.append("rates.weekly", fields.rates.weekly);
+      formData.append("rates.monthly", fields.rates.monthly);
+      formData.append("seller_info.name", fields.seller_info.name);
+      formData.append("seller_info.email", fields.seller_info.email);
+      formData.append("seller_info.phone", fields.seller_info.phone);
+
+      fields.amenities.map((amenity) => {
+        formData.append("amenities", amenity);
+      });
+      // fields.images.map((image) => {
+      //   formData.append("images", image);
+      // });
+
+      // Handle the case where the domain is not available yet
+      if (!apiDomain) {
+        return [];
+      }
+
+      const res = await fetch(`/api/properties`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (res.status === 200 || res.status === 201) {
+        toast.success("Property added successfully");
+        setFields({
+          type: "",
+          name: "",
+          description: "",
+          location: {
+            street: "",
+            city: "",
+            state: "",
+            zipcode: "",
+          },
+          beds: "",
+          baths: "",
+          square_feet: "",
+          amenities: [],
+          rates: {
+            weekly: "",
+            monthly: "",
+            nightly: "",
+          },
+          seller_info: {
+            name: "",
+            email: "",
+            phone: "",
+          },
+          // images: [],
+        });
+      } else if (res.status === 401 || res.status === 403) {
+        toast.error("Permission denied");
+      } else {
+        toast.error("Something went wrong");
+      }
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
   };
 
   useEffect(() => {
@@ -121,7 +194,12 @@ const PropertyAddForm = () => {
 
   return (
     mounted && (
-      <form onSubmit={handleSubmit(handleSubmitAddProperty)}>
+      <form
+        onSubmit={handleSubmit(handleSubmitAddProperty)}
+        // action="/api/properties"
+        // method="POST"
+        // encType="multipart/form-data"
+      >
         <h2 className="text-3xl text-center font-semibold mb-6">
           Add Property
         </h2>
@@ -758,8 +836,10 @@ const PropertyAddForm = () => {
           <label className="block text-gray-700 font-bold mb-2">
             Rates (Leave blank if not applicable)
           </label>
+          {/* <div className="mb-4 flex flex-wrap">
+          <div className="w-full sm:w-1/3 pr-2"> */}
           <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
-            <div className="flex items-center">
+            <div className="flex flex-col">
               <label htmlFor="weekly_rate" className="mr-2">
                 Weekly
               </label>
@@ -769,10 +849,23 @@ const PropertyAddForm = () => {
                 name="rates.weekly"
                 className="border rounded w-full py-2 px-3"
                 value={fields?.rates?.weekly}
-                onChange={handleChange}
+                min={120}
+                {...register("rates.weekly", {
+                  required: true,
+                  min: 120,
+                  onChange: (e) => {
+                    handleChange(e);
+                  },
+                })}
               />
+              {errors?.rates?.weekly && (
+                <span className="text-red-500 text-sm font-bold">
+                  {errors?.rates?.weekly.type === "min" &&
+                    "Weekly price must be at least $120"}
+                </span>
+              )}
             </div>
-            <div className="flex items-center">
+            <div className="flex flex-col">
               <label htmlFor="monthly_rate" className="mr-2">
                 Monthly
               </label>
@@ -782,10 +875,23 @@ const PropertyAddForm = () => {
                 name="rates.monthly"
                 className="border rounded w-full py-2 px-3"
                 value={fields?.rates?.monthly}
-                onChange={handleChange}
+                min={450}
+                {...register("rates.monthly", {
+                  required: true,
+                  min: 450,
+                  onChange: (e) => {
+                    handleChange(e);
+                  },
+                })}
               />
+              {errors?.rates?.monthly && (
+                <span className="text-red-500 text-sm font-bold">
+                  {errors?.rates?.monthly.type === "min" &&
+                    "Monthly price must be at least $450"}
+                </span>
+              )}
             </div>
-            <div className="flex items-center">
+            <div className="flex flex-col">
               <label htmlFor="nightly_rate" className="mr-2">
                 Nightly
               </label>
@@ -795,8 +901,21 @@ const PropertyAddForm = () => {
                 name="rates.nightly"
                 className="border rounded w-full py-2 px-3"
                 value={fields?.rates?.nightly}
-                onChange={handleChange}
+                min={20}
+                {...register("rates.nightly", {
+                  required: true,
+                  min: 20,
+                  onChange: (e) => {
+                    handleChange(e);
+                  },
+                })}
               />
+              {errors?.rates?.nightly && (
+                <span className="text-red-500 text-sm font-bold">
+                  {errors?.rates?.nightly.type === "min" &&
+                    "Nightly price must be at least $20"}
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -891,7 +1010,7 @@ const PropertyAddForm = () => {
             </span>
           )}
         </div>
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label
             htmlFor="images"
             className="block text-gray-700 font-bold mb-2"
@@ -920,6 +1039,7 @@ const PropertyAddForm = () => {
               accept="image/*"
               name="images"
               id="images"
+              required
               className="w-full text-gray-700 font-normal"
               {...register("images", {
                 validate: (images) => {
@@ -947,7 +1067,7 @@ const PropertyAddForm = () => {
               {errors.images.message}
             </span>
           )}
-        </div>
+        </div> */}
         <div>
           <button
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
