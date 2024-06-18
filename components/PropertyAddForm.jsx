@@ -1,12 +1,11 @@
 "use client";
-import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 const PropertyAddForm = () => {
   const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN || null;
-  const router = useRouter();
+
   const [mounted, setMounted] = useState(false);
   const [fields, setFields] = useState({
     type: "",
@@ -113,7 +112,6 @@ const PropertyAddForm = () => {
   };
 
   const handleSubmitAddProperty = async (e) => {
-    // console.log(fields);
     try {
       const formData = new FormData(e.target);
       formData.append("name", fields.name);
