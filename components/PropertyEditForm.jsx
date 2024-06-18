@@ -6,8 +6,6 @@ import { toast } from "react-toastify";
 import { fetchSingleProperty } from "@/utils/requests";
 
 const PropertyEditForm = () => {
-  const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN || null;
-
   const { id } = useParams();
   const router = useRouter();
 
@@ -36,7 +34,7 @@ const PropertyEditForm = () => {
       email: "",
       phone: "",
     },
-    images: [],
+    // images: [],
   });
   const [loading, setLoading] = useState(true);
 
@@ -172,56 +170,26 @@ const PropertyEditForm = () => {
       fields.amenities.map((amenity) => {
         formData.append("amenities", amenity);
       });
-      fields.images.map((image) => {
-        formData.append("images", image);
-      });
+      //   fields.images.map((image) => {
+      //     formData.append("images", image);
+      //   });
 
-      // Handle the case where the domain is not available yet
-      if (!apiDomain) {
-        return [];
-      }
-
-      const res = await fetch(`/api/properties`, {
-        method: "POST",
+      const res = await fetch(`/api/properties/${id}`, {
+        method: "PUT",
         body: formData,
       });
+      console.log(res);
 
       if (res.status === 200 || res.status === 201) {
-        toast.success("Property added successfully");
-        setFields({
-          type: "",
-          name: "",
-          description: "",
-          location: {
-            street: "",
-            city: "",
-            state: "",
-            zipcode: "",
-          },
-          beds: "",
-          baths: "",
-          square_feet: "",
-          amenities: [],
-          rates: {
-            weekly: "",
-            monthly: "",
-            nightly: "",
-          },
-          seller_info: {
-            name: "",
-            email: "",
-            phone: "",
-          },
-          images: [],
-        });
+        toast.success("Property editted successfully");
+        router.push(`/properties/${id}`);
       } else if (res.status === 401 || res.status === 403) {
         toast.error("Permission denied");
       } else {
         toast.error("Something went wrong");
       }
     } catch (error) {
-      console.log(error);
-      return [];
+      console.log(error.message);
     }
   };
 
@@ -1036,7 +1004,7 @@ const PropertyEditForm = () => {
             </span>
           )}
         </div>
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label
             htmlFor="images"
             className="block text-gray-700 font-bold mb-2"
@@ -1065,7 +1033,6 @@ const PropertyEditForm = () => {
               accept="image/*"
               name="images"
               id="images"
-              required
               className="w-full text-gray-700 font-normal"
               {...register("images", {
                 validate: (images) => {
@@ -1093,14 +1060,14 @@ const PropertyEditForm = () => {
               {errors.images.message}
             </span>
           )}
-        </div>{" "}
+        </div> */}
         <div>
           <button
             disabled={isSubmitting}
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
             type="submit"
           >
-            {isSubmitting ? "Loading..." : "Add Property"}
+            {isSubmitting ? "Loading..." : "Edit Property"}
           </button>
         </div>
       </form>

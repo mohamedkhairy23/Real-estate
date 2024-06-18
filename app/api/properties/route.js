@@ -103,8 +103,6 @@ export const POST = async (request) => {
     return new Response(JSON.stringify(newProperty), {
       status: 200,
     });
-
-    redirect("/");
   } catch (error) {
     return new Response("Failed to add property", { status: 500 });
   }

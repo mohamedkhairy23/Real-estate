@@ -4,8 +4,6 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 const PropertyAddForm = () => {
-  const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN || null;
-
   const [mounted, setMounted] = useState(false);
   const [fields, setFields] = useState({
     type: "",
@@ -138,11 +136,6 @@ const PropertyAddForm = () => {
         formData.append("images", image);
       });
 
-      // Handle the case where the domain is not available yet
-      if (!apiDomain) {
-        return [];
-      }
-
       const res = await fetch(`/api/properties`, {
         method: "POST",
         body: formData,
@@ -183,7 +176,6 @@ const PropertyAddForm = () => {
       }
     } catch (error) {
       console.log(error);
-      return [];
     }
   };
 
