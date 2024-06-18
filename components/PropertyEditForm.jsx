@@ -1064,7 +1064,9 @@ const PropertyEditForm = () => {
         <div>
           <button
             disabled={isSubmitting}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
+            className={`bg-blue-500  text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline ${
+              isSubmitting ? "" : "hover:bg-blue-600"
+            }`}
             type="submit"
           >
             {isSubmitting ? "Loading..." : "Edit Property"}
