@@ -69,10 +69,8 @@
       "Wheelchair Accessible",
       "Elevator Access",
       "Dishwasher",
-      "High-Speed Internet",
       "Air Conditioning",
-      "Smart TV",
-      "Outdoor Grill/BBQ"
+      "Smart TV"
     ],
     "rates": {
       "weekly": 1000,

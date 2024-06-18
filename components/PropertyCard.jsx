@@ -25,7 +25,7 @@ const PropertyCard = ({ property }) => {
   return (
     <div className="rounded-xl shadow-md relative">
       <Image
-        src={a1}
+        src={property.images[0]}
         alt=""
         height={0}
         width={0}

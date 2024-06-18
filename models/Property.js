@@ -92,12 +92,12 @@ const PropertySchema = new Schema(
         required: true,
       },
     },
-    // images: [
-    //   {
-    //     type: String,
-    //     required: true,
-    //   },
-    // ],
+    images: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
     is_featured: {
       type: Boolean,
       default: false,

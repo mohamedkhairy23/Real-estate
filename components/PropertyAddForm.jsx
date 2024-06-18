@@ -1,11 +1,12 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
 const PropertyAddForm = () => {
   const apiDomain = process.env.NEXT_PUBLIC_API_DOMAIN || null;
-
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [fields, setFields] = useState({
     type: "",
@@ -31,7 +32,7 @@ const PropertyAddForm = () => {
       email: "",
       phone: "",
     },
-    // images: [],
+    images: [],
   });
 
   const {
@@ -135,9 +136,9 @@ const PropertyAddForm = () => {
       fields.amenities.map((amenity) => {
         formData.append("amenities", amenity);
       });
-      // fields.images.map((image) => {
-      //   formData.append("images", image);
-      // });
+      fields.images.map((image) => {
+        formData.append("images", image);
+      });
 
       // Handle the case where the domain is not available yet
       if (!apiDomain) {
@@ -175,7 +176,7 @@ const PropertyAddForm = () => {
             email: "",
             phone: "",
           },
-          // images: [],
+          images: [],
         });
       } else if (res.status === 401 || res.status === 403) {
         toast.error("Permission denied");
@@ -195,7 +196,7 @@ const PropertyAddForm = () => {
   return (
     mounted && (
       <form
-        onSubmit={handleSubmit(handleSubmitAddProperty)}
+        action={handleSubmit(handleSubmitAddProperty)}
         // action="/api/properties"
         // method="POST"
         // encType="multipart/form-data"
@@ -851,7 +852,6 @@ const PropertyAddForm = () => {
                 value={fields?.rates?.weekly}
                 min={120}
                 {...register("rates.weekly", {
-                  required: true,
                   min: 120,
                   onChange: (e) => {
                     handleChange(e);
@@ -877,7 +877,6 @@ const PropertyAddForm = () => {
                 value={fields?.rates?.monthly}
                 min={450}
                 {...register("rates.monthly", {
-                  required: true,
                   min: 450,
                   onChange: (e) => {
                     handleChange(e);
@@ -903,7 +902,6 @@ const PropertyAddForm = () => {
                 value={fields?.rates?.nightly}
                 min={20}
                 {...register("rates.nightly", {
-                  required: true,
                   min: 20,
                   onChange: (e) => {
                     handleChange(e);
@@ -1010,7 +1008,7 @@ const PropertyAddForm = () => {
             </span>
           )}
         </div>
-        {/* <div className="mb-4">
+        <div className="mb-4">
           <label
             htmlFor="images"
             className="block text-gray-700 font-bold mb-2"
@@ -1067,7 +1065,7 @@ const PropertyAddForm = () => {
               {errors.images.message}
             </span>
           )}
-        </div> */}
+        </div>{" "}
         <div>
           <button
             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
