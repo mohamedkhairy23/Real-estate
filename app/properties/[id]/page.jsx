@@ -69,7 +69,7 @@ const PropertyPage = () => {
                   <BookmarkButton property={property} />
                   <ShareButtons property={property} />
                   {/* Contact Form */}
-                  <PropertyContactForm />
+                  <PropertyContactForm property={property} />
                 </aside>
               </div>
             </div>
