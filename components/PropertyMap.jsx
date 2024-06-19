@@ -13,9 +13,9 @@ const PropertyMap = ({ property }) => {
   const [viewport, setViewport] = useState({
     latitude: 0,
     longitude: 0,
+    zoom: 12,
     width: "100%",
     height: "500px",
-    zoom: 12,
   });
   const [loading, setLoading] = useState(true);
   const [geocodeError, setGeocodeError] = useState(false);
@@ -62,19 +62,17 @@ const PropertyMap = ({ property }) => {
     fetchCoords();
   }, []);
 
-  if (loading) {
-    return <Spinner />;
-  }
+  if (loading) return <Spinner loading={loading} />;
 
+  // Handle case where geocoding failed
   if (geocodeError) {
-    // handle case where geocoding failed
     return <div className="text-xl">No location data found</div>;
   }
 
   return (
     !loading && (
       <Map
-        mapboxApiAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+        mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
         mapLib={import("mapbox-gl")}
         initialViewState={{
           longitude: lng,
@@ -84,18 +82,11 @@ const PropertyMap = ({ property }) => {
         style={{ width: "100%", height: 500 }}
         mapStyle="mapbox://styles/mapbox/streets-v9"
       >
-        <Marker latitude={lat} longitude={lng} anchor="bottom">
-          <Image
-            src={pin}
-            width={40}
-            height={40}
-            alt="location"
-            className="cursor-pointer"
-          />
+        <Marker longitude={lng} latitude={lat} anchor="bottom">
+          <Image src={pin} alt="location" width={40} height={40} />
         </Marker>
       </Map>
     )
   );
 };
-
 export default PropertyMap;
