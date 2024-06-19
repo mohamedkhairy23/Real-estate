@@ -86,10 +86,15 @@ const PropertySchema = new Schema(
       email: {
         type: String,
         required: true,
+        match: [
+          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
+          "Please add a valid email",
+        ],
       },
       phone: {
         type: String,
         required: true,
+        match: [/^01[0125][0-9]{8}$/, "Please add a valid phone number"],
       },
     },
     images: [
