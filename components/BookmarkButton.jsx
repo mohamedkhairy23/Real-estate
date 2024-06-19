@@ -41,7 +41,7 @@ const BookmarkButton = ({ property }) => {
     };
 
     checkBookmarkStatus();
-  }, []);
+  }, [property._id, userId]);
 
   const handleClick = async () => {
     if (!userId) {
