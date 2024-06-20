@@ -120,6 +120,7 @@ export const PUT = async (request, { params }) => {
         phone: formData.get("seller_info.phone"),
       },
       owner: userId,
+      is_featured: amenities.length >= 10 ? true : false,
     };
 
     // Update property in database

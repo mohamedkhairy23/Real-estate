@@ -78,6 +78,7 @@ export const POST = async (request) => {
         email: formData.get("seller_info.email"),
         phone: formData.get("seller_info.phone"),
       },
+      is_featured: amenities.length >= 10 ? true : false,
     };
 
     // Upload image(s) to cloudinary
