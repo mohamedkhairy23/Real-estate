@@ -1027,7 +1027,6 @@ const PropertyAddForm = () => {
               accept="image/*"
               name="images"
               id="images"
-              required
               className="w-full text-gray-700 font-normal"
               {...register("images", {
                 validate: (images) => {
