@@ -1,36 +1,17 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![1](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/c00515b3-0d0a-4304-b288-122a2cb57c72)
+![2](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/f061398f-10c5-4901-b577-b782f16e7aba)
+![3](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/84762ca6-43d8-4ccd-adbd-be46bdfbd156)
+![4](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/81bc220a-faf1-474b-9976-238fb8ef2ef1)
+![5](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/5ae980a3-62b0-467f-a79d-1816924cd377)
+![6](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/6f58273f-9928-4b9b-a5b5-c2a673bae7e4)
+![7](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/44740a59-9a48-4a54-b4b9-e6d36539600d)
+![8](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/8b4900c3-9c74-452f-9a58-457aa33e0594)
+![9](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/75597ad0-e545-47c6-9f18-efe13bf6af31)
+![10](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/93c780bc-3c44-47c6-81d8-89bcd12edf20)
+![11](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/60f70ada-712e-4a7e-b4a6-27431ab4f964)
+![12](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/cd1e4e8f-de90-44a7-a889-3fde116aeed9)
+![13](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/9e3905a5-ef74-4a84-95ac-42083c3606d0)
+![14](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/59489e8a-33bc-4f18-aeb8-002ac6a85575)
+![15](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/1854e98d-01a1-40ab-a534-a2b159ace764)
+![16](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/f40fb69a-50e3-4210-b64f-6512d61afdd9)
+![17](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/22d235f2-961f-4267-a266-3ee48d92fb78)
