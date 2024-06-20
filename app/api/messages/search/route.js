@@ -4,7 +4,7 @@ import { getSessionUser } from "@/utils/getSessionUser";
 
 export const dynamic = "force-dynamic";
 
-// GET /api/messages
+// GET /api/messages/search
 export const GET = async (request) => {
   try {
     await connectDB();

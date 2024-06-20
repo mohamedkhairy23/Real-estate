@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import a1 from "@/assets/images/properties/a1.jpg";
 import {
   FaBed,
   FaBath,
