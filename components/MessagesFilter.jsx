@@ -20,7 +20,6 @@ const MessagesFilter = () => {
       setRead(searchParams.get("read"));
     }
   };
-  console.log(searchParams.get("read"));
 
   return (
     <form
