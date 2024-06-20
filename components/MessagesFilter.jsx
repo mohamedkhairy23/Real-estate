@@ -25,7 +25,7 @@ const MessagesFilter = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mt-3 mx-auto max-w-2xl w-full flex flex-col md:flex-row items-center"
+      className="mt-3 mx-auto max-w-2xl w-full flex flex-col md:flex-row items-center justify-center"
     >
       <div className="w-full md:w-2/5 md:pl-2">
         <label htmlFor="property-type" className="sr-only">
