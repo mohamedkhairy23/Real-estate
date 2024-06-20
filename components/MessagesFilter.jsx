@@ -33,7 +33,7 @@ const MessagesFilter = () => {
         <select
           id="property-type"
           className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
-          value={read}
+          // value={read}
           onChange={(e) => setRead(e.target.value)}
         >
           <option value="all">All</option>
