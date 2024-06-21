@@ -1,3 +1,17 @@
+## NextJs Real Estate App.
+
+## I used in this app:
+
+- NextJS For client side .
+- NextJS with mongo database and mongoose for server side.
+- Next-auth for Google Auth.
+- Next-auth Middleware for route protection
+- React hook form for form validation
+- Mapbox and Google maps api service for geocoding
+- React photo swipe gallery
+- React share for sharing a specific property(listing) on the different social media platforms
+- Context for globaling state
+
 ![1](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/c00515b3-0d0a-4304-b288-122a2cb57c72)
 ![2](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/f061398f-10c5-4901-b577-b782f16e7aba)
 ![3](https://github.com/mohamedkhairy23/Real-estate/assets/82667987/84762ca6-43d8-4ccd-adbd-be46bdfbd156)
